@@ -1,0 +1,11 @@
+<div class="jumbotron" ng-init="initPiSocket();">
+  <h1>'Allo, 'Allo!</h1>
+  <p>{{model.receivedItemId}}</p>  
+
+  <h3>Items added in our bag</h3>
+  
+  <ul ng-init="getSelectedItemsModel();">          
+    <li ng-repeat="item in model.viewModel">{{item.name}}</li>
+  </ul>
+
+</div>
