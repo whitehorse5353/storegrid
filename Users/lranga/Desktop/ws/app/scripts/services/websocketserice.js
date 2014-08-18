@@ -8,21 +8,36 @@
  * Factory in the storeGridApp.
  */
 angular.module('storeGridApp')
-  .factory('webSocketSerice', ['$q', function ($q) {    
-    var ws = new WebSocket('ws://192.168.1.157:8080/');    
-    
-    
-    // Public API here 
+  .factory('webSocketSerice', ['$q', '$timeout', function ($q, $timeout) {    
+    var ws = new WebSocket('ws://192.168.1.157:8080/');        
+    var itemsIdRecivedFromPi = [];    
     return {
-      socket: function(){ 
+      initSocket: function(){         
+        var tmpOp;
         var deferred = $q.defer();
         ws.onopen = function(){ 
           console.log('Socket has been opened!');
         };
-        ws.onmessage = function(message) {                      
-          deferred.resolve(message.data);          
-        }; 
-        return deferred.promise;
-      }
+        ws.onmessage = function(message) {                                
+          var data = message.data;  
+          if(itemsIdRecivedFromPi.length <= 0){            
+            itemsIdRecivedFromPi.push(data);                                   
+          }else{                                    
+            if(itemsIdRecivedFromPi.indexOf(data) !== -1){
+              $timeout(function(){
+                angular.forEach(itemsIdRecivedFromPi, function(dop){
+                  if(dop!==data){
+                    itemsIdRecivedFromPi.splice(itemsIdRecivedFromPi.indexOf(dop),1);  
+                  }                
+                });                
+              },itemsIdRecivedFromPi.length*2000);                            
+            }else{
+              itemsIdRecivedFromPi.push(data);
+            }                          
+          }
+          deferred.resolve(itemsIdRecivedFromPi);                  
+        };
+        return deferred.promise;         
+      }      
     };
   }]);
