@@ -18,12 +18,12 @@ angular.module('storeGridApp')
     	},
     	massageModelData: function(data){
     		var localData = this.getStoreItems(),
-    			tmp = [];    			    		    		
+    			tmp = [];
     		for(var i=0; i < localData.length; i++){
-    			if(data !== undefined && data.hasOwnProperty(localData[i].id)){    				
+    			if(data !== undefined && data.indexOf(localData[i].id) !== -1){    				
     				tmp.push(localData[i]);		    				
     			}    			
-    		}    		
+    		}    	                	
     		return tmp;    			     	
     	}    	
     };
