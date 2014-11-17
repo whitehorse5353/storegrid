@@ -1,0 +1,29 @@
+<div class="jumbotron" ng-init="initPiSocket();">
+  <h1>Items in your basket</h1>    
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Sr.No</th>
+        <th>Name</th>
+        <th>Price</th>            
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="item in viewModel">
+        <td>{{$index + 1}}</td>
+        <td>{{item.name}}</td>
+        <td>Rs.{{item.price}}</td>            
+      </tr>
+      <tr ng-show="!viewModel">
+          <td colspan="3"> Currently there are no items in the basket.</td>
+      </tr>          
+    </tbody>
+    <tfoot ng-show="viewModel">
+      <tr>
+          <td></td>
+          <td><strong>Total</strong></td>
+          <td>Rs.{{viewModel|sumByKey:'price'}}</td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
